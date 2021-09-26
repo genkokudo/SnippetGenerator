@@ -9,7 +9,7 @@ namespace SnippetGenerator.Common
     /// <summary>
     /// スニペットファイルを生成する
     /// </summary>
-    public class SnippetGenerator
+    public class Snippeter
     {
         #region 設定
 
