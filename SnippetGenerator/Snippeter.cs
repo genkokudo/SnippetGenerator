@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SnippetGenerator.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace SnippetGenerator.Common
+namespace SnippetGenerator
 {
     /// <summary>
     /// スニペットファイルを生成する
