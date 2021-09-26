@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace SnippetGenerator.lib
+namespace SnippetGenerator.Common
 {
     /// <summary>
     /// スニペットファイルを生成する

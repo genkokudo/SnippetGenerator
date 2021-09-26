@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SnippetGenerator.lib
+namespace SnippetGenerator.Common
 {
     /// <summary>
     /// テキストタイプ
     /// ぶっちゃけよくわからないのでExpansionだけ使う
-    /// </summary>
+    /// </summary>Function
     public enum SnippetType
     {
         /// <summary>選択したコードの周りにコード スニペットを配置</summary>

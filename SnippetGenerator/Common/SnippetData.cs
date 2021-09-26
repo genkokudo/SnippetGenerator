@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SnippetGenerator.lib
+namespace SnippetGenerator.Common
 {
     /// <summary>
     /// スニペットデータ
@@ -230,7 +230,7 @@ namespace SnippetGenerator.lib
         /// <param name="toolTip"></param>
         /// <param name="_default"></param>
         /// <param name="function">Function.ClassNameを指定すること</param>
-        public Literal(string id, string toolTip, string _default, Function? function = Services.SnippetGenerator.Function.ClassName)
+        public Literal(string id, string toolTip, string _default, Function? function = Common.Function.ClassName)
         {
             Initialize(id, toolTip, _default);
             Function = function;
@@ -245,7 +245,7 @@ namespace SnippetGenerator.lib
         public Literal(string id, Function? function, string functionValue)
         {
             string _default = null;
-            if(function == Services.SnippetGenerator.Function.GenerateSwitchCases)
+            if(function == Common.Function.GenerateSwitchCases)
             {
                 _default = ":default";
             }
