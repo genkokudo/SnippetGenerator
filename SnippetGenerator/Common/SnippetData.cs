@@ -135,7 +135,7 @@ namespace SnippetGenerator.Common
         public string Default { get; set; } = "DefaultValue";
 
         /// <summary>リテラルに適用する関数</summary>
-        public Function? Function { get; set; } = null;
+        public Function Function { get; set; } = Function.None;
 
         /// <summary>関数に使用する引数</summary>
         public string FunctionValue { get; set; } = null;
@@ -145,7 +145,7 @@ namespace SnippetGenerator.Common
         /// 関数指定がある場合"false"、関数指定がない場合null
         /// "true"はなし
         /// </summary>
-        public string Editable { get { return Function == null? null : "false"; } }
+        public string Editable { get { return Function == Function.None ? null : "false"; } }
 
         // defaultはリファレンスに説明が書いてないので書かない
 
@@ -156,7 +156,7 @@ namespace SnippetGenerator.Common
         /// <param name="toolTip"></param>
         /// <param name="_default"></param>
         /// <param name="function">Function.ClassNameを指定すること</param>
-        public Literal(string id, string toolTip, string _default, Function? function = Common.Function.ClassName)
+        public Literal(string id, string toolTip, string _default, Function function = Function.ClassName)
         {
             Initialize(id, toolTip, _default);
             Function = function;
@@ -168,7 +168,7 @@ namespace SnippetGenerator.Common
         /// </summary>
         /// <param name="id"></param>
         /// <param name="function">Function.ClassName以外を指定すること</param>
-        public Literal(string id, Function? function, string functionValue)
+        public Literal(string id, Function function, string functionValue)
         {
             string _default = null;
             if(function == Common.Function.GenerateSwitchCases)

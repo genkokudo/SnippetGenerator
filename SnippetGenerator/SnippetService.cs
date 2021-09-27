@@ -196,7 +196,7 @@ namespace SnippetGenerator
                             w.WriteValue(item.Default);
                             w.WriteEndElement();
                         }
-                        if (item.Function != null && item.Function != Function.None)
+                        if (item.Function != Function.None)
                         {
                             w.WriteStartElement("Function");
                             if (item.Editable != null)
@@ -207,7 +207,11 @@ namespace SnippetGenerator
                             }
                             if (!string.IsNullOrWhiteSpace(item.FunctionValue))
                             {
-                                w.WriteValue(item.Function.ToString() + "(" + item.FunctionValue + ")");
+                                w.WriteValue($"{item.Function}({item.FunctionValue})");
+                            }
+                            else if (item.Function == Function.ClassName)
+                            {
+                                w.WriteValue($"{item.Function}()");
                             }
                             w.WriteEndElement();
                         }
