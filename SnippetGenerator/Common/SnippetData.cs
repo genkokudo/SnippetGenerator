@@ -38,13 +38,13 @@ namespace SnippetGenerator.Common
         /// LiteralとObjectのリストだが
         /// Objectは使わないのでLiteralのリストにする
         /// </summary>
-        public List<Literal> Declarations { get; set; }
+        public List<Literal> Declarations { get; set; } = new List<Literal>();
 
         /// <summary>
         /// インポートする必要のある名前空間が格納されます。
         /// Imports > Import(複数) > Namespace
         /// </summary>
-        public List<string> Imports { get; set; }
+        public List<string> Imports { get; set; } = new List<string>();
 
         #endregion
 
@@ -66,6 +66,9 @@ namespace SnippetGenerator.Common
 
         #endregion
 
+        /// <summary>
+        /// 必須項目があるので、基本的にこちらのコンストラクタは使用しないこと
+        /// </summary>
         public Snippet()
         {
         }
@@ -93,89 +96,12 @@ namespace SnippetGenerator.Common
             Kind = kind;
         }
 
-        /// <summary>
-        /// スニペット変数を追加する
-        /// </summary>
-        /// <param name="literal">変数</param>
-        public void AddDeclaration(Literal literal)
-        {
-            if (Declarations is null)
-            {
-                Declarations = new List<Literal>();
-            }
-            Declarations.Add(literal);
-        }
-
-        /// <summary>
-        /// スニペット変数を追加する
-        /// </summary>
-        /// <param name="id">変数名</param>
-        /// <param name="toolTip">説明</param>
-        /// <param name="_default">デフォルト値</param>
-        /// <param name="function">適用する関数</param>
-        /// <param name="functionValue">関数に使用する引数</param>
-        public void AddDeclaration(string id, string toolTip, string _default, Function? function, string functionValue)
-        {
-            if (Declarations is null)
-            {
-                Declarations = new List<Literal>();
-            }
-            Declarations.Add(new Literal(id, function, functionValue));
-        }
-
-        /// <summary>
-        /// スニペット変数を追加する
-        /// </summary>
-        /// <param name="id">変数名</param>
-        /// <param name="toolTip">説明</param>
-        /// <param name="_default">デフォルト値</param>
-        /// <param name="function">適用する関数</param>
-        public void AddDeclaration(string id, string toolTip, string _default, Function? function)
-        {
-            if (Declarations is null)
-            {
-                Declarations = new List<Literal>();
-            }
-            Declarations.Add(new Literal(id, toolTip, _default, function));
-        }
-
-        /// <summary>
-        /// スニペット変数を追加する
-        /// </summary>
-        /// <param name="id">変数名</param>
-        /// <param name="toolTip">説明</param>
-        /// <param name="_default">デフォルト値</param>
-        public void AddDeclaration(string id, string toolTip, string _default)
-        {
-            if (Declarations is null)
-            {
-                Declarations = new List<Literal>();
-            }
-            Declarations.Add(new Literal(id, toolTip, _default));
-        }
-
         //<Imports>
         //    <Import>
         //        <Namespace>System.Data</Namespace>
         //    </Import>
         //    ...
         //</Imports>
-
-        /// <summary>
-        /// インポートする必要のある名前空間を追加する
-        /// </summary>
-        /// <param name="import">System.Data など</param>
-        public void AddImport(string import)
-        {
-            // C# 8.0以降
-            //(Imports ??= new List<string>()).Add(import);
-            if(Imports is null)
-            {
-                Imports = new List<string>();
-            }
-            Imports.Add(import);
-        }
-
     }
 
     /// <summary>

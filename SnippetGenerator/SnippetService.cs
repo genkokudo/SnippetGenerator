@@ -10,11 +10,60 @@ namespace SnippetGenerator
     /// <summary>
     /// スニペットファイルを生成する
     /// </summary>
-    public class Snippeter
+    public interface ISnippetService
+    {
+        /// <summary>
+        /// スニペットXMLを出力する
+        /// ToStringでstringを得られる。
+        /// </summary>
+        /// <param name="Data">スニペットデータ</param>
+        /// <returns>StringBuilderを返す</returns>
+        public StringWriter MakeSnippetXml(Snippet Data);
+
+        // 結局、読み込みってできるの？
+        // XMLを読んで、Snippetオブジェクトにする
+        // XmlReaderを使う感じ？
+
+        //XmlReaderSettings settings = new XmlReaderSettings();
+        //settings.IgnoreWhitespace = true;
+        //    settings.IgnoreComments   = true;
+
+        //using var reader = XmlReader.Create(@"filepath", settings);
+        //while (reader.Read())
+        //{
+        //    if (reader.IsStartElement())
+        //    {
+        //        //return only when you have START tag  
+        //        switch (reader.Name.ToString())
+        //        {
+        //            case "Name":
+        //                Console.WriteLine("The Name of the Student is " + reader.ReadString());
+        //                break;
+        //            case "Grade":
+        //                Console.WriteLine("The Grade of the Student is " + reader.ReadString());
+        //                break;
+        //        }
+        //    }
+        //}
+
+
+        // なので、まずC#とそれ以外のスニペットを準備。
+        // 文字列データにして、テストプログラムを書く。
+        // 出来ればImportsも実装。WPFにもC#限定でImports入力欄作ったらいいと思う。使うかどうかは別として。
+
+        // その前にWriterに関するテストを書く。
+
+        // 読み込みができるならば、特定のディレクトリに対してファイル名と説明のリストを作成するメソッドが欲しい。
+    }
+
+    /// <summary>
+    /// スニペットファイルを生成する
+    /// </summary>
+    public class SnippetService : ISnippetService
     {
         #region 設定
 
-        readonly XmlWriterSettings Settings = new XmlWriterSettings
+        private readonly XmlWriterSettings Settings = new XmlWriterSettings
         {
             Indent = true,
             IndentChars = ("  "),
@@ -34,15 +83,10 @@ namespace SnippetGenerator
 
         #endregion
 
-        /// <summary>
-        /// スニペットXMLを出力する
-        /// </summary>
-        /// <param name="Data">スニペットデータ</param>
-        /// <returns>StringBuilderを返す</returns>
         public StringWriter MakeSnippetXml(Snippet Data)
         {
-            if(Data == null) return null;
-
+            if (Data == null) return null;
+            
             var sw = new StringWriterUTF8();
             using (var w = XmlWriter.Create(sw, Settings))
             {
@@ -96,7 +140,7 @@ namespace SnippetGenerator
                 // Snippet句
                 w.WriteStartElement("Snippet");
 
-                var isImport = Data.Imports != null && Data.Imports.Count > 0;
+                var isImport = Data.Imports.Count > 0;
                 if (isImport)
                 {
                     //<Imports>
@@ -117,7 +161,7 @@ namespace SnippetGenerator
                     w.WriteEndElement();
                 }
 
-                var isDeclarations = Data.Declarations != null && Data.Declarations.Count > 0;
+                var isDeclarations = Data.Declarations.Count > 0;
                 if (isDeclarations)
                 {
                     //<Declarations>
