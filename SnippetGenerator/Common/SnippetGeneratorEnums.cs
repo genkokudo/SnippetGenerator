@@ -62,6 +62,9 @@ namespace SnippetGenerator.Common
         XML,
         /// <summary>XAML</summary>
         XAML
+
+        // CSSはありません
+        // https://docs.microsoft.com/ja-jp/visualstudio/ide/code-snippets-schema-reference?view=vs-2019
     }
 
     /// <summary>スニペットの種類</summary>

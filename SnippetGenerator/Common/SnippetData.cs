@@ -74,6 +74,33 @@ namespace SnippetGenerator.Common
         }
 
         /// <summary>
+        /// スニペット生成に使用するパラメータを設定する
+        /// 基本的にこのコンストラクタを使用する
+        /// </summary>
+        /// <param name="title">ファイル名</param>
+        /// <param name="author">作者</param>
+        /// <param name="description">説明</param>
+        /// <param name="shortcut">ショートカットになるフレーズ</param>
+        /// <param name="code">コード</param>
+        /// <param name="language">言語</param>
+        /// <param name="delimiter">特殊文字</param>
+        /// <param name="kind">スニペットの種類：必須ではない</param>
+        /// <param name="declarations">スニペット内変数のリスト：必須ではない</param>
+        public Snippet(string title, string author, string description, string shortcut, string code, Language language, string delimiter, Kind kind, List<Literal> declarations = null, List<string> imports = null)
+        {
+            Title = title;
+            Author = author;
+            Description = description;
+            Shortcut = shortcut;
+            Code = code;
+            Language = language;
+            Delimiter = delimiter;
+            Kind = kind;
+            Declarations = declarations ?? new List<Literal>();
+            Imports = imports ?? new List<string>();
+        }
+
+        /// <summary>
         /// 可変長要素以外で必須のものを設定する
         /// </summary>
         /// <param name="title">ファイル名</param>

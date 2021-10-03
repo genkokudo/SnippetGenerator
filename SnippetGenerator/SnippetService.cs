@@ -20,6 +20,11 @@ namespace SnippetGenerator
         /// <returns>StringBuilderを返す</returns>
         public StringWriter MakeSnippetXml(Snippet Data);
 
+        /// <summary>VisualStudioでの各言語フォルダ名を取得します</summary>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        public string GetLanguagePath(Language language);
+
         // 結局、読み込みってできるの？
         // XMLを読んで、Snippetオブジェクトにする
         // XmlReaderを使う感じ？
@@ -85,8 +90,20 @@ namespace SnippetGenerator
 
         public StringWriter MakeSnippetXml(Snippet Data)
         {
-            if (Data == null) return null;
-            
+            // 必須項目のnullチェック
+            if (Data == null)
+            {
+                throw new Exception("データが入力されていないため、生成できません。");
+            }
+            if (string.IsNullOrWhiteSpace(Data.Delimiter))
+            {
+                throw new Exception("特殊文字が入力されていないため、生成できません。");
+            }
+            if (string.IsNullOrWhiteSpace(Data.Title))
+            {
+                throw new Exception("ファイル名が入力されていないため、生成できません。");
+            }
+
             var sw = new StringWriterUTF8();
             using (var w = XmlWriter.Create(sw, Settings))
             {
@@ -246,6 +263,23 @@ namespace SnippetGenerator
             }
             return sw;
 
+        }
+
+        public string GetLanguagePath(Language language)
+        {
+            if (language == Language.CSharp)
+            {
+                return "Visual C#\\My Code Snippets";
+            }
+            else if (language == Language.SQL)
+            {
+                return "SQL_SSDT\\My Code Snippets";
+            }
+            else if (language == Language.HTML)
+            {
+                return "Visual Web Developer\\My HTML Snippets";
+            }
+            return language.ToString() + "\\My Code Snippets";
         }
     }
 }
