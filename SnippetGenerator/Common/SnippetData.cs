@@ -16,19 +16,19 @@ namespace SnippetGenerator.Common
         public SnippetType SnippetType { get; set; } = SnippetType.Expansion;
 
         /// <summary>タイトル、ファイル名にもなる</summary>
-        public string Title { get; set; } = "Untitled";
+        public string Title { get; set; }
 
         /// <summary>作者</summary>
-        public string Author { get; set; } = "ginpay";
+        public string Author { get; set; }
 
         /// <summary>説明</summary>
-        public string Description { get; set; } = "このスニペットの説明です。";
+        public string Description { get; set; }
 
         /// <summary>VisualStudioでは使いません</summary>
         public string HelpUrl { get; set; } = "www.microsoft.com";
 
         /// <summary>ショートカットになるフレーズ</summary>
-        public string Shortcut { get; set; } = string.Empty;
+        public string Shortcut { get; set; }
 
         #endregion
 
@@ -66,12 +66,12 @@ namespace SnippetGenerator.Common
 
         #endregion
 
-        /// <summary>
-        /// 必須項目があるので、基本的にこちらのコンストラクタは使用しないこと
-        /// </summary>
-        public Snippet()
-        {
-        }
+        ///// <summary>
+        ///// 必須項目があるので、基本的にこちらのコンストラクタは使用しないこと
+        ///// </summary>
+        //public Snippet()
+        //{
+        //}
 
         /// <summary>
         /// スニペット生成に使用するパラメータを設定する
@@ -88,39 +88,16 @@ namespace SnippetGenerator.Common
         /// <param name="declarations">スニペット内変数のリスト：必須ではない</param>
         public Snippet(string title, string author, string description, string shortcut, string code, Language language, string delimiter, Kind kind, List<Literal> declarations = null, List<string> imports = null)
         {
-            Title = title;
-            Author = author;
-            Description = description;
-            Shortcut = shortcut;
-            Code = code;
+            Title = title ?? "Untitled";
+            Author = author ?? "Unknown";
+            Description = description ?? string.Empty;
+            Shortcut = shortcut ?? string.Empty;
+            Code = code ?? string.Empty;
             Language = language;
-            Delimiter = delimiter;
+            Delimiter = delimiter ?? string.Empty;
             Kind = kind;
             Declarations = declarations ?? new List<Literal>();
             Imports = imports ?? new List<string>();
-        }
-
-        /// <summary>
-        /// 可変長要素以外で必須のものを設定する
-        /// </summary>
-        /// <param name="title">ファイル名</param>
-        /// <param name="author">作者</param>
-        /// <param name="description">説明</param>
-        /// <param name="shortcut">ショートカットになるフレーズ</param>
-        /// <param name="code">コード</param>
-        /// <param name="language">言語</param>
-        /// <param name="delimiter">特殊文字</param>
-        /// <param name="kind">スニペットの種類</param>
-        public Snippet(string title, string author, string description, string shortcut, string code, Language language, string delimiter, Kind kind)
-        {
-            Title = title;
-            Author = author;
-            Description = description;
-            Shortcut = shortcut;
-            Code = code;
-            Language = language;
-            Delimiter = delimiter;
-            Kind = kind;
         }
 
         //<Imports>

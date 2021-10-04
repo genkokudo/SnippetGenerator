@@ -25,40 +25,21 @@ namespace SnippetGenerator
         /// <returns></returns>
         public string GetLanguagePath(Language language);
 
-        // 結局、読み込みってできるの？
-        // XMLを読んで、Snippetオブジェクトにする
-        // XmlReaderを使う感じ？
+        /// <summary>
+        /// スニペットの読み込み
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public Snippet ReadSnippet(string filePath);
 
-        //XmlReaderSettings settings = new XmlReaderSettings();
-        //settings.IgnoreWhitespace = true;
-        //    settings.IgnoreComments   = true;
+        /// <summary>
+        /// 指定ディレクトリ以下の全スニペットの読み込み
+        /// 言語別に取得
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <returns>言語別のスニペットリスト</returns>
+        public Dictionary<Language, List<Snippet>> GetSnippetList(string directoryPath);
 
-        //using var reader = XmlReader.Create(@"filepath", settings);
-        //while (reader.Read())
-        //{
-        //    if (reader.IsStartElement())
-        //    {
-        //        //return only when you have START tag  
-        //        switch (reader.Name.ToString())
-        //        {
-        //            case "Name":
-        //                Console.WriteLine("The Name of the Student is " + reader.ReadString());
-        //                break;
-        //            case "Grade":
-        //                Console.WriteLine("The Grade of the Student is " + reader.ReadString());
-        //                break;
-        //        }
-        //    }
-        //}
-
-
-        // なので、まずC#とそれ以外のスニペットを準備。
-        // 文字列データにして、テストプログラムを書く。
-        // 出来ればImportsも実装。WPFにもC#限定でImports入力欄作ったらいいと思う。使うかどうかは別として。
-
-        // その前にWriterに関するテストを書く。
-
-        // 読み込みができるならば、特定のディレクトリに対してファイル名と説明のリストを作成するメソッドが欲しい。
     }
 
     /// <summary>
@@ -94,14 +75,6 @@ namespace SnippetGenerator
             if (Data == null)
             {
                 throw new Exception("データが入力されていないため、生成できません。");
-            }
-            if (string.IsNullOrWhiteSpace(Data.Delimiter))
-            {
-                throw new Exception("特殊文字が入力されていないため、生成できません。");
-            }
-            if (string.IsNullOrWhiteSpace(Data.Title))
-            {
-                throw new Exception("ファイル名が入力されていないため、生成できません。");
             }
 
             var sw = new StringWriterUTF8();
@@ -248,8 +221,8 @@ namespace SnippetGenerator
                 {
                     w.WriteStartAttribute("Delimiter", "");
                     w.WriteString(Data.Delimiter);
+                    w.WriteEndAttribute();
                 }
-                w.WriteEndAttribute();
                 w.WriteCData(Data.Code);
 
                 // Snippet句ここまで
@@ -280,6 +253,49 @@ namespace SnippetGenerator
                 return "Visual Web Developer\\My HTML Snippets";
             }
             return language.ToString() + "\\My Code Snippets";
+        }
+
+        public Snippet ReadSnippet(string filePath)
+        {
+            //var result = new Snippet();
+            // 結局、読み込みってできるの？
+            // XMLを読んで、Snippetオブジェクトにする
+            // XmlReaderを使う感じ？
+
+            //XmlReaderSettings settings = new XmlReaderSettings();
+            //settings.IgnoreWhitespace = true;
+            //    settings.IgnoreComments   = true;
+
+            //using var reader = XmlReader.Create(@"filepath", settings);
+            //while (reader.Read())
+            //{
+            //    if (reader.IsStartElement())
+            //    {
+            //        //return only when you have START tag  
+            //        switch (reader.Name.ToString())
+            //        {
+            //            case "Name":
+            //                Console.WriteLine("The Name of the Student is " + reader.ReadString());
+            //                break;
+            //            case "Grade":
+            //                Console.WriteLine("The Grade of the Student is " + reader.ReadString());
+            //                break;
+            //        }
+            //    }
+            //}
+
+
+            // なので、まずC#とそれ以外のスニペットを準備。
+            // 文字列データにして、テストプログラムを書く。
+            // 出来ればImportsも実装。WPFにもC#限定でImports入力欄作ったらいいと思う。使うかどうかは別として。
+
+            //return result;
+            return null;
+        }
+
+        public Dictionary<Language, List<Snippet>> GetSnippetList(string directoryPath)
+        {
+            throw new NotImplementedException();
         }
     }
 }
