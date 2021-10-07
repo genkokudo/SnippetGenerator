@@ -257,40 +257,56 @@ namespace SnippetGenerator
 
         public Snippet ReadSnippet(string filePath)
         {
-            //var result = new Snippet();
-            // 結局、読み込みってできるの？
-            // XMLを読んで、Snippetオブジェクトにする
-            // XmlReaderを使う感じ？
+            var data = File.ReadAllText(filePath);
 
-            //XmlReaderSettings settings = new XmlReaderSettings();
-            //settings.IgnoreWhitespace = true;
-            //    settings.IgnoreComments   = true;
+            var settings = new XmlReaderSettings
+            {
+                IgnoreWhitespace = true,
+                IgnoreComments = true
+            };
 
-            //using var reader = XmlReader.Create(@"filepath", settings);
-            //while (reader.Read())
-            //{
-            //    if (reader.IsStartElement())
-            //    {
-            //        //return only when you have START tag  
-            //        switch (reader.Name.ToString())
-            //        {
-            //            case "Name":
-            //                Console.WriteLine("The Name of the Student is " + reader.ReadString());
-            //                break;
-            //            case "Grade":
-            //                Console.WriteLine("The Grade of the Student is " + reader.ReadString());
-            //                break;
-            //        }
-            //    }
-            //}
+            var list = new List<string>();
+            using var reader = XmlReader.Create(filePath, settings);
+            while (reader.Read())
+            {
+                if (reader.IsStartElement())
+                {
+                    //switch (reader.Name.ToString())
+                    //{
+                    //    case "Title":
+                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
+                    //        break;
+                    //    case "Author":
+                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
+                    //        break;
+                    //    default:
+                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
+                    //        break;
+                    //}
+
+                    /*
+                        CodeSnippets is 
+                        Header is 
+                        SnippetType is Expansion
+                        Title is title
+                        Author is author
+                        Description is description
+                        HelpUrl is www.microsoft.com
+                        Shortcut is shortcut
+                        Snippet is 
+                     */
+
+                    list.Add($"{reader.Name} is " + reader.ReadString());
+                }
+            }
 
 
             // なので、まずC#とそれ以外のスニペットを準備。
             // 文字列データにして、テストプログラムを書く。
             // 出来ればImportsも実装。WPFにもC#限定でImports入力欄作ったらいいと思う。使うかどうかは別として。
 
-            //return result;
-            return null;
+            var result = new Snippet("", "", "", string.Join("\r\n", list), data, Language.CSharp, "", Kind.Any, null, null);
+            return result;
         }
 
         public Dictionary<Language, List<Snippet>> GetSnippetList(string directoryPath)

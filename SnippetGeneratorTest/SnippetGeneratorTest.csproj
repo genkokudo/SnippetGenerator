@@ -24,4 +24,10 @@
     <ProjectReference Include="..\SnippetGenerator\SnippetGenerator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Sample\TextFile1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

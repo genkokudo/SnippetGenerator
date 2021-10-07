@@ -39,7 +39,7 @@ namespace SnippetGeneratorTest
         }
 
         [Trait("Category", "スニペット作成")]
-        [Theory(DisplayName = "プロパティやメソッドを使ったテスト")]
+        [Theory(DisplayName = "スニペットを作成するテスト")]
         [MemberData(nameof(TestDataProp))]
         public void AddTest2(string title, string author, string description, string shortcut, string code, Language language, string delimiter, Kind kind, List<Literal> declarations, List<string> imports, string answer)
         {
@@ -49,6 +49,20 @@ namespace SnippetGeneratorTest
             var result = xml.ToString();
             output.WriteLine(result);
             result.Is(answer);
+            //Assert.Throws<Exception>(() => service.MakeSnippetXml(new Snippet()));
+        }
+
+        [Trait("Category", "スニペット読み込み")]
+        [Theory(DisplayName = "スニペットを読み込むテスト")]
+        [InlineData("./Sample/TextFile1.txt")]
+        public void ReadSnippetTest(string filepath)
+        {
+            var service = new SnippetService();
+
+            var result = service.ReadSnippet(filepath);
+            output.WriteLine(result.Shortcut);
+            output.WriteLine(result.Code);
+
             //Assert.Throws<Exception>(() => service.MakeSnippetXml(new Snippet()));
         }
     }
