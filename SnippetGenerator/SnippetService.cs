@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -38,10 +39,17 @@ namespace SnippetGenerator
         /// 指定ディレクトリ以下の全スニペットの読み込み
         /// 言語別に取得
         /// </summary>
-        /// <param name="directoryPath"></param>
+        /// <param name="directoryFillPath">ディレクトリフルパス（相対パスは動作未確認）</param>
         /// <returns>言語別のスニペットリスト</returns>
-        public Dictionary<Language, List<Snippet>> GetSnippetList(string directoryPath);
+        public Dictionary<Language, List<SnippetInfo>> GetSnippetList(string directoryFillPath);
 
+        /// <summary>
+        /// 指定したディレクトリ以下のスニペットフォルダのフルパスリストをVisualStudio準拠で取得
+        /// 存在するものだけ辞書に入れて返す
+        /// </summary>
+        /// <param name="directoryFullPath">ディレクトリフルパス（相対パスは動作未確認）</param>
+        /// <returns></returns>
+        public Dictionary<Language, string> GetExistDirectryDictionary(string directoryFullPath);
     }
 
     /// <summary>
@@ -330,9 +338,81 @@ namespace SnippetGenerator
             return result;
         }
 
-        public Dictionary<Language, List<Snippet>> GetSnippetList(string directoryPath)
+        public Dictionary<Language, List<SnippetInfo>> GetSnippetList(string directoryPath)
         {
-            throw new NotImplementedException();
+            var result = new Dictionary<Language, List<SnippetInfo>>();
+            
+            // 各言語のフォルダを取得
+            var dirDict = GetExistDirectryDictionary(directoryPath);
+
+            // 引数のディレクトリ存在チェック
+            if (dirDict == null)
+            {
+                return null;
+            }
+
+            // フォルダがある言語だけ処理する
+            foreach (var language in dirDict.Keys) {
+                var fileList = new List<string>();
+                // TODO:DirectoryService.FolderInsiteSearchを使って、指定拡張子のファイルを全て探す
+                FolderInsiteSearch(dirDict[language], fileList, new string[] { ".snippet" });
+                var infoList = new List<SnippetInfo>();
+
+                foreach (var filePath in fileList)
+                {
+                    // スニペット読み込み
+                    var snippet = ReadSnippet(filePath);
+                    infoList.Add(new SnippetInfo { FullPath = filePath, Discription = snippet.Description, Title = snippet.Title });
+                }
+                result.Add(language, infoList);
+            }
+
+            return result;
+        }
+
+        public Dictionary<Language, string> GetExistDirectryDictionary(string directoryPath)
+        {
+            // 存在チェック
+            if (!Directory.Exists(directoryPath))
+            {
+                return null;
+            }
+
+            // 各言語のフォルダを取得
+            var result = new Dictionary<Language, string>();
+            var langs = (Language[])Enum.GetValues(typeof(Language));
+            foreach (var lang in langs)
+            {
+                // 各言語について、ディレクトリを取得する
+                var langdir = GetLanguagePath(lang);
+                var sourceDir = Path.Combine(directoryPath, langdir);
+
+                if (Directory.Exists(sourceDir))
+                {
+                    result.Add(lang, sourceDir);
+                }
+            }
+            return result;
+        }
+
+
+
+        // TODO:あとでDirectoryServiceを独立化して、それを使用するように書き直すこと！！！！
+        private void FolderInsiteSearch(string folderPath, List<string> fileFullPathList, string[] extensions)
+        {
+            //現在のフォルダ内の指定拡張子のファイル名をリストに追加
+            foreach (var fileName in Directory.EnumerateFiles(folderPath))
+                foreach (var endId in extensions)
+                    if (fileName.EndsWith(endId))
+                        fileFullPathList.Add(fileName);
+            //現在のフォルダ内のすべてのフォルダパスを取得
+            var dirNames = Directory.EnumerateDirectories(folderPath);
+            //フォルダがないならば再帰探索終了し、あるなら各フォルダに対して探索実行
+            if (dirNames.Count() == 0)
+                return;
+            else
+                foreach (var dirName in dirNames)
+                    FolderInsiteSearch(dirName, fileFullPathList, extensions);
         }
     }
 

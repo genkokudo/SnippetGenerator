@@ -25,13 +25,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Sample\TextFile2.txt">
+    <None Update="Sample\JavaScript\My Code Snippets\TextFile1.snippet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Sample\TextFile3.txt">
+    <None Update="Sample\JavaScript\My Code Snippets\TextFile2.snippet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Sample\TextFile1.txt">
+    <None Update="Sample\JavaScript\My Code Snippets\TextFile3.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TextFile2.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TextFile3.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TextFile1.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TypeScript\My Code Snippets\TextFile1.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TypeScript\My Code Snippets\TextFile2.snippet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Sample\TypeScript\My Code Snippets\TextFile3.snippet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

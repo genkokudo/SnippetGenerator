@@ -27,29 +27,20 @@ namespace SnippetGeneratorTest
             {
                 yield return new object[] {
                     "title", "author", "description", "shortcut", "code", Language.CSharp, "delimiter", Kind.Any, null, null,
-                    "./Sample/TextFile1.txt"
+                    "./Sample/TextFile1.snippet"
                 };
                 yield return new object[] {
                     null, null, null, null, null, Language.CSharp, null, Kind.Any, null, null,
-                    "./Sample/TextFile2.txt"
+                    "./Sample/TextFile2.snippet"
                 };
                 yield return new object[] {
                     "title", "author", "description", "shortcut", "code", Language.CSharp, "delimiter", Kind.Any,
                     new List<Literal> { new Literal { Id = "id1", Default = "default1", ToolTip = "tooltip1", Function = Function.None, FunctionValue = null },
                         new Literal { Id = "id2", Default = "default2", ToolTip = "tooltip2", Function = Function.SimpleTypeName, FunctionValue = "fanctionvalue2" } },
                     new List<string> { "import1", "import2", "import3" },
-                    "./Sample/TextFile3.txt"
+                    "./Sample/TextFile3.snippet"
                 };
             }
-        }
-
-
-        [Trait("Category", "Arithmetic")]
-        [Fact(DisplayName = "1+2=3のはず")]
-        public void Test1()
-        {
-            (1 + 2).Is(3);
-            output.WriteLine("Test1を実行");
         }
 
         [Trait("Category", "スニペット作成")]
@@ -68,9 +59,9 @@ namespace SnippetGeneratorTest
 
         [Trait("Category", "スニペット読み込み")]
         [Theory(DisplayName = "スニペットを読み込むテスト")]
-        [InlineData("./Sample/TextFile1.txt")]
-        [InlineData("./Sample/TextFile2.txt")]
-        [InlineData("./Sample/TextFile3.txt")]
+        [InlineData("./Sample/TextFile1.snippet")]
+        [InlineData("./Sample/TextFile2.snippet")]
+        [InlineData("./Sample/TextFile3.snippet")]
         public void ReadSnippetTest(string filepath)
         {
             var service = new SnippetService();
@@ -78,7 +69,20 @@ namespace SnippetGeneratorTest
             var result = service.ReadSnippet(filepath);
 
             result.IsNotNull();
-
         }
+
+        [Trait("Category", "スニペット一覧")]
+        [Fact(DisplayName = "スニペット一覧を作成する")]
+        public void GetSnippetListTest()
+        {
+            var service = new SnippetService();
+
+            var directory = Path.GetFullPath("./Sample");
+            var result = service.GetSnippetList(directory);
+            result[Language.JavaScript].IsNotNull();
+            result[Language.TypeScript].IsNotNull();
+            result[Language.CSharp].IsNull();
+        }
+
     }
 }
