@@ -362,9 +362,12 @@ namespace SnippetGenerator
                 {
                     // スニペット読み込み
                     var snippet = ReadSnippet(filePath);
-                    infoList.Add(new SnippetInfo { FullPath = filePath, Discription = snippet.Description, Title = snippet.Title });
+                    infoList.Add(new SnippetInfo { FullPath = filePath, Description = snippet.Description, Title = snippet.Title });
                 }
-                result.Add(language, infoList);
+                if (infoList.Count > 0)
+                {
+                    result.Add(language, infoList);
+                }
             }
 
             return result;

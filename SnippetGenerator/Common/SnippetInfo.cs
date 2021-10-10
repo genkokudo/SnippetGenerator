@@ -13,7 +13,7 @@ namespace SnippetGenerator.Common
         public string Title { get; set; }
 
         /// <summary>説明</summary>
-        public string Discription { get; set; }
+        public string Description { get; set; }
 
         /// <summary>ファイルのフルパス</summary>
         public string FullPath { get; set; }
