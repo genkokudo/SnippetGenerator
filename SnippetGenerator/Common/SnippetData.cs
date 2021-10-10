@@ -154,17 +154,18 @@ namespace SnippetGenerator.Common
         // defaultはリファレンスに説明が書いてないので書かない
 
         /// <summary>
-        /// Function.ClassNameのみ対応
+        /// Function.ClassNameのみ対応（この時functionValue=""）
+        /// または、読み込み時に使用する
         /// </summary>
         /// <param name="id"></param>
         /// <param name="toolTip"></param>
         /// <param name="_default"></param>
         /// <param name="function">Function.ClassNameを指定すること</param>
-        public Literal(string id, string toolTip, string _default, Function function = Function.ClassName)
+        public Literal(string id, string toolTip, string _default, Function function = Function.ClassName, string functionValue = "")
         {
             Initialize(id, toolTip, _default);
             Function = function;
-            FunctionValue = string.Empty;
+            FunctionValue = functionValue;
         }
 
         /// <summary>

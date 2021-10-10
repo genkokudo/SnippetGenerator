@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace SnippetGenerator
 {
@@ -255,57 +257,76 @@ namespace SnippetGenerator
             return language.ToString() + "\\My Code Snippets";
         }
 
+        // 現在の所、1ファイルに複数スニペットが無いものとしている
+        // もしそれが必要になったら読み込み用クラスを生成し直す
         public Snippet ReadSnippet(string filePath)
         {
-            var data = File.ReadAllText(filePath);
-
+            // 読み込み
             var settings = new XmlReaderSettings
             {
                 IgnoreWhitespace = true,
                 IgnoreComments = true
             };
-
-            var list = new List<string>();
             using var reader = XmlReader.Create(filePath, settings);
-            while (reader.Read())
+            var serializer = new XmlSerializer(typeof(CodeSnippets));
+            var xml = serializer.Deserialize(reader) as CodeSnippets;
+
+            // 読み込んだものをSnippetクラスに落とし込む
+            var language = Language.CSharp;
+            var kind = Kind.Any;
+            Enum.TryParse(xml.CodeSnippet.Snippet.Code.Language, out language);
+            Enum.TryParse(xml.CodeSnippet.Snippet.Code.Kind, out kind);
+
+            // 原始的な方法で移し替える
+            var declarations = new List<Literal>();
+            if (xml.CodeSnippet.Snippet.Declarations != null)
             {
-                if (reader.IsStartElement())
+                foreach (var declaration in xml.CodeSnippet.Snippet.Declarations)
                 {
-                    //switch (reader.Name.ToString())
-                    //{
-                    //    case "Title":
-                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
-                    //        break;
-                    //    case "Author":
-                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
-                    //        break;
-                    //    default:
-                    //        Console.WriteLine($"{reader.Name} is " + reader.ReadString());
-                    //        break;
-                    //}
+                    // Functionを取り出す
+                    Function function = Function.None;
+                    var funcStr = string.Empty;
 
-                    /*
-                        CodeSnippets is 
-                        Header is 
-                        SnippetType is Expansion
-                        Title is title
-                        Author is author
-                        Description is description
-                        HelpUrl is www.microsoft.com
-                        Shortcut is shortcut
-                        Snippet is 
-                     */
+                    // SimpleTypeName(fanctionvalue2)
+                    if (declaration.Function != null && !string.IsNullOrWhiteSpace(declaration.Function.Value))
+                    {
+                        var splited = declaration.Function.Value.Split('(');
+                        Enum.TryParse(splited[0], out function);
+                        funcStr = splited[1].Trim(')');
+                    }
 
-                    list.Add($"{reader.Name} is " + reader.ReadString());
+                    var literal = new Literal(declaration.ID, declaration.ToolTip, declaration.Default, function, funcStr);
+                    declarations.Add(literal);
                 }
             }
 
+            var imports = new List<string>();
+            if (xml.CodeSnippet.Snippet.Imports != null)
+            {
+                foreach (var import in xml.CodeSnippet.Snippet.Imports)
+                {
+                    imports.Add(import.Namespace);
+                }
+            }
+            
+            var result = new Snippet(
+                xml.CodeSnippet.Header.Title,
+                xml.CodeSnippet.Header.Author,
+                xml.CodeSnippet.Header.Description,
+                xml.CodeSnippet.Header.Shortcut,
+                xml.CodeSnippet.Snippet.Code.Value, 
+                language,
+                xml.CodeSnippet.Snippet.Code.Delimiter, 
+                kind, 
+                declarations, 
+                imports
+            );
 
-            // なので、まずC#とそれ以外のスニペットを準備。
-            // 文字列データにして、テストプログラムを書く。
-            // 出来ればImportsも実装。WPFにもC#限定でImports入力欄作ったらいいと思う。使うかどうかは別として。
+            // 必須ではないフィールドも読み込む
+            SnippetType snippetType = SnippetType.Expansion;
+            result.HelpUrl = xml.CodeSnippet.Header.HelpUrl;
+            Enum.TryParse(xml.CodeSnippet.Header.SnippetTypes.SnippetType, out snippetType);
 
-            var result = new Snippet("", "", "", string.Join("\r\n", list), data, Language.CSharp, "", Kind.Any, null, null);
             return result;
         }
 
@@ -314,4 +335,9 @@ namespace SnippetGenerator
             throw new NotImplementedException();
         }
     }
+
+
+
+
+
 }
