@@ -1,4 +1,5 @@
-﻿using SnippetGenerator.Common;
+﻿using MithrilCube.Services;
+using SnippetGenerator.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,13 @@ namespace SnippetGenerator
     /// </summary>
     public class SnippetService : ISnippetService
     {
+        IDirectoryService _directoryService;
+
+        public SnippetService(IDirectoryService directoryService)
+        {
+            _directoryService = directoryService;
+        }
+
         #region 設定
 
         private readonly XmlWriterSettings Settings = new XmlWriterSettings
@@ -354,8 +362,8 @@ namespace SnippetGenerator
             // フォルダがある言語だけ処理する
             foreach (var language in dirDict.Keys) {
                 var fileList = new List<string>();
-                // TODO:DirectoryService.FolderInsiteSearchを使って、指定拡張子のファイルを全て探す
-                FolderInsiteSearch(dirDict[language], fileList, new string[] { ".snippet" });
+                // 指定拡張子のファイルを全て探す
+                _directoryService.FolderInsiteSearch(dirDict[language], fileList, new string[] { ".snippet" });
                 var infoList = new List<SnippetInfo>();
 
                 foreach (var filePath in fileList)
@@ -399,28 +407,5 @@ namespace SnippetGenerator
         }
 
 
-
-        // TODO:あとでDirectoryServiceを独立化して、それを使用するように書き直すこと！！！！
-        private void FolderInsiteSearch(string folderPath, List<string> fileFullPathList, string[] extensions)
-        {
-            //現在のフォルダ内の指定拡張子のファイル名をリストに追加
-            foreach (var fileName in Directory.EnumerateFiles(folderPath))
-                foreach (var endId in extensions)
-                    if (fileName.EndsWith(endId))
-                        fileFullPathList.Add(fileName);
-            //現在のフォルダ内のすべてのフォルダパスを取得
-            var dirNames = Directory.EnumerateDirectories(folderPath);
-            //フォルダがないならば再帰探索終了し、あるなら各フォルダに対して探索実行
-            if (dirNames.Count() == 0)
-                return;
-            else
-                foreach (var dirName in dirNames)
-                    FolderInsiteSearch(dirName, fileFullPathList, extensions);
-        }
     }
-
-
-
-
-
 }

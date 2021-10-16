@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MithrilCube\MithrilCube\MithrilCube.csproj" />
+  </ItemGroup>
+
 </Project>

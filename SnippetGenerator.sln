@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetGenerator", "SnippetGenerator\SnippetGenerator.csproj", "{026771FF-F666-46AE-A9D9-8A6E4FFD373D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetGeneratorTest", "SnippetGeneratorTest\SnippetGeneratorTest.csproj", "{CDFAA648-7805-477F-8464-93A3FF90BEAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetGeneratorTest", "SnippetGeneratorTest\SnippetGeneratorTest.csproj", "{CDFAA648-7805-477F-8464-93A3FF90BEAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MithrilCube", "..\MithrilCube\MithrilCube\MithrilCube.csproj", "{5F3297E1-B28D-4372-89B8-1FD5BD979E01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CDFAA648-7805-477F-8464-93A3FF90BEAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDFAA648-7805-477F-8464-93A3FF90BEAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDFAA648-7805-477F-8464-93A3FF90BEAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3297E1-B28D-4372-89B8-1FD5BD979E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3297E1-B28D-4372-89B8-1FD5BD979E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3297E1-B28D-4372-89B8-1FD5BD979E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3297E1-B28D-4372-89B8-1FD5BD979E01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
