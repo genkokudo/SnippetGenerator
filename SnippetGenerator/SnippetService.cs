@@ -258,19 +258,21 @@ namespace SnippetGenerator
 
         public string GetLanguagePath(Language language)
         {
-            if (language == Language.CSharp)
+            switch (language)
             {
-                return "Visual C#\\My Code Snippets";
+                case Language.CSharp:
+                    return "Visual C#\\My Code Snippets";
+                case Language.HTML:
+                    return "Visual Web Developer\\My HTML Snippets";
+                case Language.SQL:
+                    return "SQL_SSDT\\My Code Snippets";
+                case Language.XML:
+                    return language.ToString() + "\\My Xml Snippets";
+                case Language.XAML:
+                    return language.ToString() + "\\My XAML Snippets";
+                default:
+                    return language.ToString() + "\\My Code Snippets";
             }
-            else if (language == Language.SQL)
-            {
-                return "SQL_SSDT\\My Code Snippets";
-            }
-            else if (language == Language.HTML)
-            {
-                return "Visual Web Developer\\My HTML Snippets";
-            }
-            return language.ToString() + "\\My Code Snippets";
         }
 
         // 現在の所、1ファイルに複数スニペットが無いものとしている
