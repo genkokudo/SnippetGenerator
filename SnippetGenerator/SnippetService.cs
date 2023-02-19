@@ -363,9 +363,8 @@ namespace SnippetGenerator
 
             // フォルダがある言語だけ処理する
             foreach (var language in dirDict.Keys) {
-                var fileList = new List<string>();
                 // 指定拡張子のファイルを全て探す
-                _directoryService.FolderInsiteSearch(dirDict[language], fileList, new string[] { ".snippet" });
+                var fileList = _directoryService.FolderInsiteSearch(dirDict[language], new string[] { ".snippet" });
                 var infoList = new List<SnippetInfo>();
 
                 foreach (var filePath in fileList)
